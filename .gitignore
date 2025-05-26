@@ -1,0 +1,13 @@
+# Arquivo de configuração local
+.env
+
+# Planilhas reais
+*.xlsx
+
+# PDFs gerados automaticamente
+*.pdf
+
+# Arquivos temporários / sistema
+__pycache__/
+*.pyc
+.DS_Store
