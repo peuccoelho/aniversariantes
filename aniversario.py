@@ -21,7 +21,7 @@ if not arquivo_excel:
 
 df.columns = df.columns.str.strip().str.upper()
 
-# Função para converter múltiplos formatos de data
+# converter múltiplos formatos de data
 def converter_data(data):
     formatos = ['%d/%m/%Y', '%d.%m.%Y', '%d%m%Y']
     for f in formatos:
@@ -41,7 +41,7 @@ meses_pt = [
 ]
 nome_mes = meses_pt[mes_escolhido]
 
-# Filtra aniversariantes
+# Filtrar aniversariantes
 aniversariantes = df[df['DATA DE NASCIMENTO'].dt.month == mes_escolhido].copy()
 
 
@@ -57,13 +57,12 @@ else:
     colunas_saida = ['DATA DE NASCIMENTO', 'GH', 'NOME COMPLETO', 'ETOR']
     aniversariantes_saida = aniversariantes[colunas_saida].copy()
 
-    # Formata a data como dd/mm/yyyy para Excel
+    # formatar a data como dd/mm/yyyy para excel
     aniversariantes_saida['DATA DE NASCIMENTO'] = aniversariantes_saida['DATA DE NASCIMENTO'].dt.strftime('%d/%m/%Y')
 
     nome_arquivo_excel = f'aniversariantes_mes_{mes_escolhido:02}.xlsx'
     nome_aba = f"Aniversariantes_{nome_mes}"
 
-    # Salva Excel com título
     with pd.ExcelWriter(nome_arquivo_excel, engine='openpyxl') as writer:
         aniversariantes_saida.to_excel(writer, sheet_name=nome_aba, index=False, startrow=2)
 
@@ -77,7 +76,7 @@ else:
     ws['A1'].alignment = Alignment(horizontal='center')
     wb.save(nome_arquivo_excel)
 
-    # Gera o PDF
+    # gerar o PDF
     nome_arquivo_pdf = f'aniversariantes_mes_{mes_escolhido:02}.pdf'
     doc = SimpleDocTemplate(nome_arquivo_pdf, pagesize=A4)
     styles = getSampleStyleSheet()
@@ -85,7 +84,7 @@ else:
     titulo_style = ParagraphStyle(
         name='CenterTitle',
         parent=styles['Title'],
-        alignment=1,  # center
+        alignment=1,  
         fontSize=16,
         spaceAfter=12
     )
@@ -96,7 +95,7 @@ else:
     elementos.append(Paragraph(titulo, titulo_style))
     elementos.append(Spacer(1, 12))
 
-    # Prepara dados para o PDF
+    # preparar dados para o PDF
     dados_pdf = aniversariantes_saida.copy()
     dados_pdf['DATA DE NASCIMENTO'] = pd.to_datetime(
         dados_pdf['DATA DE NASCIMENTO'], format='%d/%m/%Y', errors='coerce'
@@ -122,4 +121,4 @@ else:
     elementos.append(tabela)
     doc.build(elementos)
 
-    print(f"✔ Arquivos gerados com sucesso: {nome_arquivo_excel} e {nome_arquivo_pdf}")
+    print(f"Arquivos gerados com sucesso: {nome_arquivo_excel} e {nome_arquivo_pdf}")
