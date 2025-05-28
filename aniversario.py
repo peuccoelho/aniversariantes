@@ -31,7 +31,10 @@ def converter_data(data):
             continue
     return pd.NaT
 
-df['DATA DE NASCIMENTO'] = df['DATA DE NASCIMENTO'].apply(converter_data)
+df["DATA DE NASCIMENTO"] = df["DATA DE NASCIMENTO"].apply(converter_data)
+df = df[pd.to_datetime(df["DATA DE NASCIMENTO"], errors="coerce").notna()]  
+df["DATA DE NASCIMENTO"] = pd.to_datetime(df["DATA DE NASCIMENTO"], dayfirst=True)  
+
 
 mes_escolhido = int(input("Digite o número do mês (1 a 12): "))
 
