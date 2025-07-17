@@ -77,7 +77,7 @@ aniversariantes = aniversariantes.sort_values(by='DIA')
 aniversariantes.drop(columns=['DIA'], inplace=True)
 
 # dados para exportação
-colunas_saida = ['DATA DE NASCIMENTO', 'GH', 'NOME COMPLETO', 'ETOR']
+colunas_saida = ['DATA DE NASCIMENTO', 'GH', 'NOME COMPLETO', 'SETOR']
 aniversariantes_saida = aniversariantes[colunas_saida].copy()
 aniversariantes_saida['DATA DE NASCIMENTO'] = aniversariantes_saida['DATA DE NASCIMENTO'].dt.strftime('%d/%m/%Y')
 
@@ -116,7 +116,7 @@ dados_pdf = aniversariantes_saida.copy()
 dados_pdf['DATA DE NASCIMENTO'] = pd.to_datetime(
     dados_pdf['DATA DE NASCIMENTO'], format='%d/%m/%Y', errors='coerce'
 ).dt.strftime('%d/%m')
-dados_pdf.rename(columns={'ETOR': 'SETOR'}, inplace=True)
+
 
 colunas_pdf = ['DATA DE NASCIMENTO', 'GH', 'NOME COMPLETO', 'SETOR']
 dados = [colunas_pdf] + dados_pdf.values.tolist()
