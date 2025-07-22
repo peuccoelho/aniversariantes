@@ -25,8 +25,23 @@ def converter_data(valor):
 
     valor_str = str(valor).strip()
 
-    
-    if valor_str.isdigit() and len(valor_str) == 6:
+
+    # Se vier só dia e mês (DDMM)
+    if valor_str.isdigit() and len(valor_str) == 4:
+        dia = valor_str[:2]
+        mes = valor_str[2:4]
+        ano = "1900"  # Ano padrão
+        valor_str = f"{dia}/{mes}/{ano}"
+
+    # Se vier no formato DD/MM (sem ano)
+    elif len(valor_str) == 5 and valor_str[2] in ["/", "."]:
+        dia = valor_str[:2]
+        mes = valor_str[3:5]
+        ano = "1900"
+        valor_str = f"{dia}/{mes}/{ano}"
+
+    # Se vier dia, mês e ano (DDMMYY ou DDMMYYYY)
+    elif valor_str.isdigit() and len(valor_str) == 6:
         dia = valor_str[:2]
         mes = valor_str[2:4]
         ano = valor_str[4:]
@@ -62,8 +77,9 @@ meses_pt = [
 ]
 nome_mes = meses_pt[mes_escolhido]
 
-# filtro de aniversariantes
-aniversariantes = df[df['DATA DE NASCIMENTO'].dt.month == mes_escolhido].copy()
+import numpy as np
+# filtro de aniversariantes (aceita datas sem ano, usando ano padrão 1900)
+aniversariantes = df[df['DATA DE NASCIMENTO'].apply(lambda x: isinstance(x, (datetime, np.datetime64)) and x.month == mes_escolhido)].copy()
 
 if aniversariantes.empty:
     print(f"Nenhuma pessoa faz aniversário em {nome_mes}.")
