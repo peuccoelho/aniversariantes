@@ -128,7 +128,11 @@ titulo = f"Aniversariantes do mês {nome_mes}"
 elementos.append(Paragraph(titulo, titulo_style))
 elementos.append(Spacer(1, 12))
 
+
 dados_pdf = aniversariantes_saida.copy()
+# Deixar nomes com iniciais maiúsculas
+if 'NOME COMPLETO' in dados_pdf.columns:
+    dados_pdf['NOME COMPLETO'] = dados_pdf['NOME COMPLETO'].apply(lambda x: str(x).title())
 dados_pdf['DATA DE NASCIMENTO'] = pd.to_datetime(
     dados_pdf['DATA DE NASCIMENTO'], format='%d/%m/%Y', errors='coerce'
 ).dt.strftime('%d/%m')
